@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto">
     <div class="w-full max-w-xs mx-auto mt-8">
-      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="sendForm">
         <h1 class="text-gray-700 font-bold mt-4 mb-8 text-xl">Register</h1>
         <!-- Username -->
         <div class="mb-4">
@@ -12,7 +12,7 @@
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
+            v-model="username"
             type="text"
           />
         </div>
@@ -25,7 +25,7 @@
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
+            v-model="password"
             type="password"
           />
         </div>
@@ -38,7 +38,7 @@
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
+            v-model="fullname"
             type="text"
           />
         </div>
@@ -51,7 +51,7 @@
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
+            v-model="phone"
             type="text"
           />
         </div>
@@ -64,24 +64,22 @@
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
-            type="text"
+            v-model="email"
+            type="email"
           />
         </div>
         <div class="flex items-center justify-between">
-          <router-link to="/dashboard" class="w-full">
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="button"
-            >
-              Register
-            </button>
-          </router-link>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Register
+          </button>
         </div>
         <div class="mt-4">
-          <router-link to="/login" class="text-blue-500 font-bold"
-            >Cancel</router-link
-          >
+          <button type="reset" class="text-blue-500 font-bold">
+            Cancel
+          </button>
         </div>
       </form>
     </div>
@@ -89,9 +87,34 @@
 </template>
 
 <script>
-// import { mapActions } from "vuex"
+import { mapActions } from "vuex"
 
 export default {
     name: "Signup",
+    data() {
+      return {
+        username: "",
+        password: "",
+        phone: "",
+        email: "",
+        fullname: "",
+      }
+    },
+    methods: {
+      sendForm() {
+        const payload = {
+          username: this.username,
+          password: this.password,
+          full_name: this.fullname,
+          phone_number: this.phone,
+          email: this.email
+        }
+        this.signUp(payload)
+      },
+      ...mapActions(["signUp"])
+    },
+    computed: {
+      
+    }
 }
 </script>
