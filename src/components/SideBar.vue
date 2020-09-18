@@ -6,7 +6,7 @@
             <router-link  to="/" class="bg-blue-300 h-16">
                 <button class="my-4">Dashboard</button>
             </router-link>
-            <router-link to="/product" class="bg-blue-300 h-16">
+            <router-link :to="{ name: `Product Table`, query: { page: 1 } }" class="bg-blue-300 h-16">
                 <button class="my-4">Product</button>
             </router-link>
             <router-link to="/user" class="bg-blue-300 h-16">

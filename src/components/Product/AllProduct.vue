@@ -25,13 +25,15 @@
                 <td class="px-4 py-2">{{ p.stock }}</td>
                 <td class="px-4 py-2">{{ p.price }}</td>
                 <td class="px-4 py-2">
-                  <button class="border border-blue-300 w-12">+</button>
+                  <router-link :to="{ name: `Detail Product`, params: { id: p.id } }">
+                    <button class="border border-blue-300 w-12">+</button>
+                  </router-link>
                 </td>
                 <td class="px-4 py-2">
-                  <button class="border border-blue-300 w-12">-</button>
+                  <button v-on:click="del(p.id)" type="button" class="border border-blue-300 w-12">-</button>
                 </td>
                 <td class="px-4 py-2">
-                  <modal-product-in />
+                  <modal-product-in :id="p.id" />
                 </td>
                 <td class="px-4 py-2">
                   <modal-product-out />
@@ -39,6 +41,14 @@
               </tr>
             </tbody>
           </table>
+          <nav class="flex float-right mr-32" aria-label="Page navigation example">
+            <div v-for="i in product.totalPages" v-bind:key="i">
+              <router-link :to="{ name: `Product Table`, query: { page: i }}" replace >
+                <button type="button" class="page-link"> {{i}} </button>
+              </router-link>
+              <!-- <button v-on:click="send(i)" type="button" class="page-link"> {{i}} </button> -->
+            </div>
+          </nav>  
         </div>
     </div>
 </template>
@@ -48,22 +58,43 @@ import { mapActions, mapState } from "vuex"
 import ModalProductAll from "../Modal/ProductAll.vue"
 import ModalProductIn from "../Modal/ProductIn.vue"
 import ModalProductOut from "../Modal/ProductOut.vue"
+import router from '../../router/index'
 
 export default {
     name: "AllProduct",
+    data() {
+      return {
+        // page: 1
+      }
+    },
     components : {
         ModalProductAll,
         ModalProductIn,
         ModalProductOut
     },
     created() {
-        this.getAllProducts()
+      this.getAllProducts(this.$route.query.page)
     },
     computed: {
         ...mapState(["product"])
     },
     methods: {
-        ...mapActions(["getAllProducts"])
+      send(e) {
+        console.log(e)
+        router.go({ name: "Product Table", query: { page: e } })
+      },
+      del(e) {
+        console.log(e)
+        this.deleteProducts(e)
+      },
+      ...mapActions(["getAllProducts", "deleteProducts"])
     },
+    watch: {
+      '$route' (to, from) {
+        if (from.query.page != to.query.page) {
+          return this.getAllProducts(to.query.page)
+        }
+      }
+    }
 }
 </script>

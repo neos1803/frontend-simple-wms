@@ -13,20 +13,20 @@
       <!-- a -->
       <div class="mx-auto">
         <div class="w-full max-w-xs mx-auto mt-8">
-          <form enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="newData" method="POST">
+          <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="newData">
             <h1 class="text-gray-700 font-bold mt-4 mb-8 text-xl">Add Product</h1>
 
             <!-- Product Name -->
             <div class="mb-4">
               <label
                 class="text-left block text-gray-700 text-base font-bold mb-2"
-                for="productname"
+                for="productname"   
               >Product Name</label>
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="productname"
                 type="text"
-                v-model="product_name"
+                v-model="data.product_name"
               />
             </div>
 
@@ -39,8 +39,8 @@
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="stock"
-                type="number"
-                v-model="stock"
+                type="text"
+                v-model="data.stock"
               />
             </div>
 
@@ -53,8 +53,8 @@
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="price"
-                type="number"
-                v-model="price"
+                type="text"
+                v-model="data.price"
               />
             </div>
 
@@ -98,11 +98,12 @@ export default {
   data() {
     return {
       showModal: false,
-      product_name: "",
-      image: "",
-      photo: "",
-      stock: "",
-      price: ""
+      data: {
+        product_name: "",
+        photo: null,
+        stock: 0,
+        price: 0
+      }
     };
   },
   methods: {
@@ -110,15 +111,18 @@ export default {
       this.showModal = !this.showModal;
     },
     onSelect() {
-        this.photo = this.$refs.file.files[0]
-        console.log(this.photo)
+        this.data.photo = this.$refs.file.files[0]
+        console.log(this.data.photo)
     },
     newData() {
         const formData=  new FormData()
-        formData.append('name', this.product_name)
-        formData.append('stock', this.stock)
-        formData.append('price', this.price)
-        formData.append('photo', this.photo.name)
+        console.log(this.data.product_name)
+        console.log(this.data.stock)
+        console.log(this.data.price)
+        formData.append('name', this.data.product_name)
+        formData.append('stock', this.data.stock)
+        formData.append('price', this.data.price)
+        formData.append('photo', this.data.photo)
         // const payload = {
         //     body: {
         //         name: this.product_name,
