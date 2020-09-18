@@ -40,8 +40,14 @@ Vue.use(VueRouter)
         component: () => import(/* webpackChunkName: "dashboard" */ '../components/Content/DashboardContent.vue')
       },
       {
-        path: "product",
+        path: "product/",
+        name: "Product Table",
         component: () => import(/* webpackChunkName: "product" */ '../components/Content/ProductContent.vue')
+      },
+      {
+        path: "product/:id",
+        name: "Detail Product",
+        component: () => import(/* webpackChunkName: "product" */ '../components/Content/DetailContent.vue')
       },
       {
         path: "user",
