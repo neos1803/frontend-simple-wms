@@ -7,6 +7,7 @@ import products from './products'
 import products_in from './products_in'
 import products_out from './products_out'
 import auth from './auth'
+import users from './users'
 
 Vue.use(Vuex)
 
@@ -29,7 +30,8 @@ export default new Vuex.Store({
     products,
     products_in,
     products_out,
-    auth
+    auth,
+    users
   },
   plugins: [vuexPersist.plugin]
 })

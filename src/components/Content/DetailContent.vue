@@ -12,7 +12,7 @@
                     <input v-model="stock" class="shadow appearance-none border border-red-500 rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                     <div class="grid grid-cols-2 gap-3">
                         <button type="submit" class="border border-blue-300 w-auto">Update Data</button>
-                        <button @click="remove" class="border border-blue-300 w-auto">Delete Data</button>
+                        <button v-on:click="remove" class="border border-blue-300 w-auto">Delete Data</button>
                     </div>
                 </div>
             </div>
@@ -28,10 +28,6 @@ export default {
     name: "DetailContent",
     data() {
         return {
-            // name: this.$store.state.detail.name,
-            // price: this.$store.state.detail.price,
-            // stock: this.$store.state.detail.stock,
-            // photo: null
             id: 0,
             name: "",
             price: 0,
@@ -46,12 +42,6 @@ export default {
     async created() {
         await this.getById(this.$route.params.id)
     },
-    // updated() {
-    //     this.assign()
-    // },
-    // computed: {
-    //     ...mapState(["detail"])
-    // },
     methods: {
         onSelect() {
             this.data.photo = this.$refs.file.files[0]
@@ -100,9 +90,9 @@ export default {
             this.updateProducts(payload)
         },
         remove() {
-
+            this.deleteProducts(this.id)
         },
-        ...mapActions(["updateProducts"])
+        ...mapActions("products", ["updateProducts", "deleteProducts"])
     },
 }
 </script>

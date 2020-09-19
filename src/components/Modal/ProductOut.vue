@@ -13,7 +13,7 @@
       <!-- a -->
       <div class="mx-auto">
         <div class="w-full max-w-xs mx-auto mt-8">
-          <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="send">
             <h1 class="text-gray-700 font-bold mt-4 mb-8 text-xl">Check-Out Product</h1>
 
             <!-- Stock -->
@@ -24,18 +24,16 @@
               >Total</label>
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="stock"
+                v-model="total"
                 type="text"
               />
             </div>
 
             <div class="flex items-center justify-between">
-              <router-link to="/dashboard" class="w-full">
                 <button
                   class="bg-blue-500 hover:bg-blue-700 text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   type="submit"
                 >Create</button>
-              </router-link>
             </div>
             <div class="mt-4">
               <button
@@ -54,18 +52,30 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
+
 export default {
   name: "ModalProductOut",
+  props: ["id"],
   components: {},
   data() {
     return {
       showModal: false,
+      total: 0,
     };
   },
   methods: {
     toggleModal() {
       this.showModal = !this.showModal;
     },
+    send() {
+      const payload = {
+        product_id : this.id,
+        total: parseInt(this.total)
+      }
+      this.createProductsOut(payload)
+    },
+    ...mapActions("products_out", ["createProductsOut"])
   },
 };
 </script>

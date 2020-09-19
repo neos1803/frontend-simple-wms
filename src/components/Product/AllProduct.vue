@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-white h-full">
+    <div class="h-full">
         <modal-product-all />   
-        <button class="rounded-lg border border-blue-300 mt-8  w-1/6 h-12 mr-8 float-right">
+        <button v-on:click="print()" class="rounded-lg border border-white mt-8 text-white w-1/6 h-12 mr-8 float-right">
                 Download All Activity Report
         </button>
         <div class="pt-32">
@@ -18,7 +18,7 @@
                 <th class="px-4 py-2">Check-Out Product</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
               <tr v-for="(p, index) in product.data" :key="index">
                 <td class="px-4 py-2">{{index + 1}}</td>
                 <td class="px-4 py-2">{{ p.name }}</td>
@@ -36,15 +36,15 @@
                   <modal-product-in :id="p.id" />
                 </td>
                 <td class="px-4 py-2">
-                  <modal-product-out />
+                  <modal-product-out :id="p.id" />
                 </td>
               </tr>
             </tbody>
           </table>
-          <nav class="flex float-right mr-32" aria-label="Page navigation example">
-            <div v-for="i in product.totalPages" v-bind:key="i">
-              <router-link :to="{ name: `Product Table`, query: { page: i }}" replace >
-                <button type="button" class="page-link"> {{i}} </button>
+          <nav class="mx-auto text-white mt-4" aria-label="Page navigation example">
+            <div class="inline-block" v-for="i in product.totalPages" v-bind:key="i">
+              <router-link type="button" class="mr-4 border border-white w-8" :to="{ name: `Product Table`, query: { page: i }}" replace >
+                {{i}}
               </router-link>
               <!-- <button v-on:click="send(i)" type="button" class="page-link"> {{i}} </button> -->
             </div>
@@ -59,6 +59,7 @@ import ModalProductAll from "../Modal/ProductAll.vue"
 import ModalProductIn from "../Modal/ProductIn.vue"
 import ModalProductOut from "../Modal/ProductOut.vue"
 import router from '../../router/index'
+import Api from '../../store/api'
 
 export default {
     name: "AllProduct",
@@ -86,6 +87,19 @@ export default {
       del(e) {
         console.log(e)
         this.deleteProducts(e)
+      },
+      print() {
+        Api.get('print?type=all', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       },
       ...mapActions("products", ["getAllProducts", "deleteProducts"])
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      class="rounded-lg border border-blue-300 mt-8 w-1/6 h-12 ml-8 float-left"
+      class="rounded-lg border border-white mt-8 text-white mt-8 w-1/6 h-12 ml-8 float-left"
       type="button"
       v-on:click="toggleModal()"
     >Add New Product</button>

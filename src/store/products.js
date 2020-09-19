@@ -70,7 +70,7 @@ export default {
         })
           .then((res) => {
             console.log(res)
-            router.go({ name: "Product Table" })
+            router.push({ name: "Product Table" }).catch(() => {})
           })
           .catch((err) => {
             console.log(err)

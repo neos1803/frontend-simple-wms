@@ -42,7 +42,25 @@ Vue.use(VueRouter)
       {
         path: "product/",
         name: "Product Table",
-        component: () => import(/* webpackChunkName: "product" */ '../components/Content/ProductContent.vue')
+        redirect: { name: "All Product" },
+        component: () => import(/* webpackChunkName: "product" */ '../components/Content/ProductContent.vue'),
+        children: [
+          {
+            path: "all",
+            name: "All Product",
+            component: () => import(/* webpackChunkName: "all" */ '../components/Product/AllProduct.vue'),
+          },
+          {
+            path: "in",
+            name: "Product In",
+            component: () => import(/* webpackChunkName: "in" */ '../components/Product/ProductIn.vue'),
+          },
+          {
+            path: "out",
+            name: "Product Out",
+            component: () => import(/* webpackChunkName: "out" */ '../components/Product/ProductOut.vue'),
+          },
+        ]
       },
       {
         path: "product/:id",
@@ -51,12 +69,9 @@ Vue.use(VueRouter)
       },
       {
         path: "user",
+        name: "User Table",
         component: () => import(/* webpackChunkName: "user" */ '../components/Content/UserContent.vue')
       },
-      {
-        path: "detail",
-        component: () => import(/* webpackChunkName: "detail" */ '../components/Content/DetailContent.vue')
-      }
     ]
   }
 ]
