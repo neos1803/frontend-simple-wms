@@ -1,10 +1,13 @@
 <template>
     <div class="h-full">
+        <loading :active.sync="isLoading" 
+        :can-cancel="false" 
+        :is-full-page="isFull"></loading>
         <modal-product-all />   
         <button v-on:click="print()" class="rounded-lg border border-white mt-8 text-white w-1/6 h-12 mr-8 float-right">
                 Download All Activity Report
         </button>
-        <div class="pt-32">
+        <div v-if="isLoading == false" class="pt-32">
             <table class="table mx-auto w-2/3">
             <thead class="bg-gray-200">
               <tr>
@@ -60,21 +63,32 @@ import ModalProductIn from "../Modal/ProductIn.vue"
 import ModalProductOut from "../Modal/ProductOut.vue"
 import router from '../../router/index'
 import Api from '../../store/api'
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
     name: "AllProduct",
     data() {
       return {
-        // page: 1
+        // page: 1,
+        isLoading: true,
+        isFull: true
       }
     },
     components : {
         ModalProductAll,
         ModalProductIn,
-        ModalProductOut
+        ModalProductOut,
+        Loading
     },
     created() {
+      console.log(this.isLoading)
       this.getAllProducts(this.$route.query.page)
+        .then(() => {
+          this.isLoading = false
+        })
     },
     computed: {
         ...mapState("products", ["product"]),
@@ -106,7 +120,8 @@ export default {
     watch: {
       '$route' (to, from) {
         if (from.query.page != to.query.page) {
-          return this.getAllProducts(to.query.page)
+          // return this.getAllProducts(to.query.page)
+          return this.$router.go({ name: "Product Table", query: { page: to.query.page } })
         }
       }
     }

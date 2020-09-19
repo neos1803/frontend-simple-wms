@@ -1,11 +1,14 @@
 <template>
     <div class="w-5/6 px-24 py-24">
+        <loading :active.sync="isLoading" 
+        :can-cancel="false" 
+        :is-full-page="true" />
         <div class="h-full">
             <!-- <modal-product-all />    -->
         <button class="rounded-lg border border-white mt-8 text-white w-1/6 h-12 mr-8 float-right">
                 Download All Activity Report
         </button>
-        <div class="pt-32">
+        <div v-if="isLoading == false" class="pt-32">
             <table class="table mx-auto w-2/3">
             <thead class="bg-gray-200">
               <tr>
@@ -59,16 +62,24 @@
 
 <script>
 import { mapActions, mapState } from "vuex"
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
     name: "UserContent",
     data() {
         return {
-
+            data: "",
+            isLoading: true
         }
     },
     created() {
-        this.getUsers()
+        this.getUsers(this.$route.query.page).then(() => this.isLoading = false)
+    },
+    components: {
+        Loading
     },
     computed: {
         ...mapState("users", ["user"])
@@ -79,7 +90,8 @@ export default {
     watch: {
         '$route' (to, from) {
             if (from.query.page != to.query.page) {
-            return this.getUsers(to.query.page)
+                // return this.getUsers(to.query.page)
+                return this.$router.go({ name: "User Table", query: { page: to.query.page }})
             }
         }
     }

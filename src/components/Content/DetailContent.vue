@@ -1,9 +1,13 @@
 <template>
     <div class="w-5/6 px-24 py-24">
-        <form class="flex bg-white h-full" @submit.prevent="update">
+        <loading :active.sync="isLoading" 
+        :can-cancel="false" 
+        :is-full-page="isFull">
+        </loading>
+        <form v-if="isLoading == false" class="flex border border-white h-full" @submit.prevent="update">
             <div class="w-2/6 ml-64 my-auto">
                 <img class="w-full h-full" v-bind:src="photo_url">
-                <input class="mt-4" type="file" name="" ref="file" id="" @change="onSelect" />
+                <!-- <input class="mt-4" type="file" name="" ref="file" id="" @change="onSelect" /> -->
             </div>
             <div class="w-4/6 my-auto">
                 <div class="w-1/2 ml-32 grid grid-rows-4 gap-4">
@@ -21,8 +25,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex"
-import Api from "../../store/api.js"
+import { mapActions, mapState } from "vuex"
+// import Api from "../../store/api.js"
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
     name: "DetailContent",
@@ -33,42 +41,34 @@ export default {
             price: 0,
             stock: 0,
             photo_url: "",
-            photo: null
+            photo: null,
+            isLoading: true,
+            isFull: false,
         }
     },
     components: {
-        
+        Loading
     },
-    async created() {
-        await this.getById(this.$route.params.id)
+    created() {
+        this.getById(this.$route.params.id)
+            .then(() => {
+                this.name = this.detail.name
+                this.price = this.detail.price
+                this.stock = this.detail.stock
+                this.photo_url = this.detail.photo_url
+                this.id = this.detail.id
+                this.isLoading = false
+                // console.log(this.detail)
+            })
+    },
+    computed: {
+        ...mapState("products", ["detail"])
     },
     methods: {
         onSelect() {
             this.data.photo = this.$refs.file.files[0]
             console.log(this.data.photo)
         },
-        getById(payload) {
-            console.log("Getting")
-            Api.get("product/" + payload, {
-                headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
-                }
-            })
-            .then((res) => {
-                const { data : { data } } = res
-                // commit("setDetail", data)
-                // console.log(data.name)
-                this.id = data.id
-                this.name = data.name
-                this.photo_url = data.photo_url
-                this.price = data.price
-                this.stock = data.stock
-            })
-        },
-        // assign() {
-        //     this.name = this.detail.name
-        //     console.log(this.name)
-        // }, 
         update() {
             const payload = {
                 id: this.id,
@@ -89,10 +89,12 @@ export default {
             console.log(payload)
             this.updateProducts(payload)
         },
-        remove() {
-            this.deleteProducts(this.id)
+        async remove() {
+            console.log("Deleting")
+            await this.deleteProducts(this.id)
+            // this.$router.push({ name: "Product Table" })
         },
-        ...mapActions("products", ["updateProducts", "deleteProducts"])
+        ...mapActions("products", ["updateProducts", "deleteProducts", "getById"])
     },
 }
 </script>

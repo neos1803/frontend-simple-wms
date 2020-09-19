@@ -112,7 +112,6 @@ export default {
     },
     onSelect() {
         this.data.photo = this.$refs.file.files[0]
-        console.log(this.data.photo)
     },
     newData() {
         const formData=  new FormData()
@@ -135,7 +134,7 @@ export default {
         // }
         this.createProducts(formData)
     },
-    ...mapActions(["createProducts"])
+    ...mapActions("products", ["createProducts"])
   },
 };
 </script>

@@ -8,12 +8,13 @@ export default {
     },
     mutations: {
         setUser(state, payload) {
-            console.log(payload)
+            // console.log(payload)
             state.user = payload
         },
     },
     actions: {
         async getUsers({ commit }, payload) {
+            let result = ""
             const page = payload ? payload : 1
             Api.get(`/user/?limit=10&page=${page}`, {
             headers: {
@@ -22,9 +23,12 @@ export default {
             })
             .then((res) => {
                 const { data: { data } } = res
+                result = data
                 commit("setUser", data)
                 // console.log(data.totalItems)
             })
+            // console.log(result.response)
+            return result
         },
     }
 }

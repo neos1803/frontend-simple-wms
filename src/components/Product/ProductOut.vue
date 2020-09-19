@@ -1,5 +1,8 @@
 <template>
     <div class="h-full">
+        <loading :active.sync="isLoading" 
+        :can-cancel="false" 
+        :is-full-page="true" />
         <button class="rounded-lg border border-white mt-8 text-white mt-8  w-1/6 h-12 mr-8 float-right">
                 Download Report Product Out
         </button>
@@ -15,7 +18,7 @@
                 <th class="px-4 py-2">Delete</th>
               </tr>
             </thead>
-            <tbody class="bg-white">
+            <tbody v-if="isLoading == false" class="bg-white">
               <tr v-for="(p, index) in product_out.data" :key="index">
                 <td class="px-4 py-2">{{ index + 1 }}</td>
                 <td class="px-4 py-2">{{ p.Product.name }}</td>
@@ -44,11 +47,23 @@
 
 <script>
 import { mapActions, mapState } from "vuex"
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
     name: "ProductOut",
+    data() {
+      return {
+        isLoading: true
+      }
+    },
     created() {
-        this.getAllProductsOut()
+        this.getAllProductsOut(this.$route.query.page).then(() => this.isLoading = false)
+    },
+    components: {
+      Loading
     },
     computed: {
         ...mapState("products_out", ["product_out"])
@@ -62,7 +77,7 @@ export default {
     watch: {
       '$route' (to, from) {
         if (from.query.page != to.query.page) {
-          return this.getAllProductsOut(to.query.page)
+          return this.$router.go(to.query.page)
         }
       }
     }
