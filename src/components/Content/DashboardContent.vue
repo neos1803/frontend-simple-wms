@@ -36,10 +36,14 @@ export default {
         this.getAllProducts()
     },
     computed: {
-        ...mapState(["product_in", "product_out", "product"])
+        ...mapState("products_out", ["product_out"]),
+        ...mapState("products", ["product"]),
+        ...mapState("products_in", ["product_in"])
     },
     methods: {
-        ...mapActions(["getAllProductsIn", "getAllProductsOut", "getAllProducts"])
+        ...mapActions("products_out", ["getAllProductsOut"]),
+        ...mapActions("products", ["getAllProducts"]),
+        ...mapActions("products_in", ["getAllProductsIn"])
     }
 }
 </script>

@@ -12,7 +12,6 @@
                 <th class="px-4 py-2">Product Name</th>
                 <th class="px-4 py-2">Date</th>
                 <th class="px-4 py-2">Total</th>
-                <th class="px-4 py-2">Update</th>
                 <th class="px-4 py-2">Delete</th>
               </tr>
             </thead>
@@ -20,18 +19,23 @@
               <tr v-for="(p, index) in product_in.data" :key="index">
                 <td class="px-4 py-2">{{ index + 1 }}</td>
                 <td class="px-4 py-2">{{ p.id }}</td>
-                <td class="px-4 py-2">{{ p.Product.name }}</td>
+                <td class="px-4 py-2"></td>
                 <td class="px-4 py-2">{{ p.date }}</td>
                 <td class="px-4 py-2">{{ p.total }}</td>
                 <td class="px-4 py-2">
-                  <button class="border border-blue-300 w-12">+</button>
-                </td>
-                <td class="px-4 py-2">
-                  <button class="border border-blue-300 w-12">-</button>
+                  <button v-on:click="del(p.id)" type="button" class="border border-blue-300 w-12">-</button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <nav class="flex float-right mr-32" aria-label="Page navigation example">
+            <div v-for="i in product_in.totalPages" v-bind:key="i">
+              <router-link :to="{ name: `Product Table`, query: { page: i }}" replace >
+                <button type="button" class="page-link"> {{i}} </button>
+              </router-link>
+              <!-- <button v-on:click="send(i)" type="button" class="page-link"> {{i}} </button> -->
+            </div>
+          </nav>
         </div>
     </div>
 </template>
@@ -48,10 +52,21 @@ export default {
         this.getAllProductsIn()
     },
     computed: {
-        ...mapState(["product_in"])
+        ...mapState("products_in", ["product_in"])
     },
     methods: {
-        ...mapActions(["getAllProductsIn"])
+      del(e) {
+        console.log(e)
+        // this.deleteProductsIn(e)
+      },
+      ...mapActions("products_in", ["getAllProductsIn", "deleteProductsIn"])
+    },
+    watch: {
+      '$route' (to, from) {
+        if (from.query.page != to.query.page) {
+          return this.getAllProductsIn(to.query.page)
+        }
+      }
     }
 }
 </script>

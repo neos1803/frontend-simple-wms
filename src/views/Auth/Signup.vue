@@ -111,7 +111,7 @@ export default {
         }
         this.signUp(payload)
       },
-      ...mapActions(["signUp"])
+      ...mapActions("auth", ["signUp"])
     },
     computed: {
       

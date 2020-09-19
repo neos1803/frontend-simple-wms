@@ -76,7 +76,7 @@ export default {
       this.getAllProducts(this.$route.query.page)
     },
     computed: {
-        ...mapState(["product"])
+        ...mapState("products", ["product"]),
     },
     methods: {
       send(e) {
@@ -87,7 +87,7 @@ export default {
         console.log(e)
         this.deleteProducts(e)
       },
-      ...mapActions(["getAllProducts", "deleteProducts"])
+      ...mapActions("products", ["getAllProducts", "deleteProducts"])
     },
     watch: {
       '$route' (to, from) {

@@ -73,7 +73,7 @@ export default {
             this.logIn(payload)
             e.preventDefault();
         },
-        ...mapActions(["logIn"])
+        ...mapActions("auth", ["logIn"])
     }
 }
 </script>

@@ -1,8 +1,5 @@
 <template>
     <div class="bg-white h-full">
-        <button class="rounded-lg border border-blue-300 mt-8 w-1/6 h-12 ml-8 float-left">
-                Create Product Out
-        </button>   
         <button class="rounded-lg border border-blue-300 mt-8  w-1/6 h-12 mr-8 float-right">
                 Download Report Product Out
         </button>
@@ -35,6 +32,14 @@
               </tr>
             </tbody>
           </table>
+           <nav class="flex float-right mr-32" aria-label="Page navigation example">
+            <div v-for="i in product_out.totalPages" v-bind:key="i">
+              <router-link :to="{ name: `Product Table`, query: { page: i }}" replace >
+                <button type="button" class="page-link"> {{i}} </button>
+              </router-link>
+              <!-- <button v-on:click="send(i)" type="button" class="page-link"> {{i}} </button> -->
+            </div>
+          </nav>
         </div>
     </div>
 </template>
@@ -48,10 +53,17 @@ export default {
         this.getAllProductsOut()
     },
     computed: {
-        ...mapState(["product_out"])
+        ...mapState("products_out", ["product_out"])
     },
     methods: {
-        ...mapActions(["getAllProductsOut"])
+        ...mapActions("products_out", ["getAllProductsOut"])
+    },
+    watch: {
+      '$route' (to, from) {
+        if (from.query.page != to.query.page) {
+          return this.getAllProductsOut(to.query.page)
+        }
+      }
     }
 }
 </script>
