@@ -4,23 +4,29 @@
         :can-cancel="false" 
         :is-full-page="isFull" />
         <div class="container min-h-full">
-            <div class="grid grid-rows-3 gap-y-3 mx-auto w-1/4 font-serf font-serif text-blue-600">
-                <div class="h-32 bg-gray-200 mt-16">
+            <div class="grid grid-rows-2 grid-cols-2 mx-auto w-full font-serf font-serif text-blue-600">
+                <div class="h-32 w-1/2 bg-gray-200 mt-16 mx-auto">
                     <div class="my-8">
                         <h1>Total Product</h1>
                         <h3>{{product.totalItems}}</h3>
                     </div>
                 </div>
-                <div class="h-32 bg-gray-200 mt-16">
+                <div class="h-32 w-1/2 bg-gray-200 mt-16 mx-auto">
                     <div class="my-8">
                         <h1>Total Aktivitas Masuk</h1>
                         <h3>{{product_in.totalItems}}</h3>
                     </div>
                 </div>
-                <div class="h-32 bg-gray-200 mt-16">
+                <div class="h-32 w-1/2 bg-gray-200 mt-16 mx-auto">
                     <div class="my-8">
                         <h1>Total Aktivitas Keluar</h1>
                         <h3>{{product_out.totalItems}}</h3>
+                    </div>
+                </div>
+                <div class="h-32 w-1/2 bg-gray-200 mt-16 mx-auto">
+                    <div class="my-8">
+                        <h1>Total Admin</h1>
+                        <h3>{{user.totalItems}}</h3>
                     </div>
                 </div>
             </div>
@@ -53,17 +59,20 @@ export default {
     computed: {
         ...mapState("products_out", ["product_out"]),
         ...mapState("products", ["product"]),
-        ...mapState("products_in", ["product_in"])
+        ...mapState("products_in", ["product_in"]),
+        ...mapState("users", ["user"])
     },
     methods: {
         async getAll() {
             await this.getAllProductsIn()
             await this.getAllProductsOut()
             await this.getAllProducts()
+            await this.getUsers()
         },
         ...mapActions("products_out", ["getAllProductsOut"]),
         ...mapActions("products", ["getAllProducts"]),
-        ...mapActions("products_in", ["getAllProductsIn"])
+        ...mapActions("products_in", ["getAllProductsIn"]),
+        ...mapActions("users", ["getUsers"])
     }
 }
 </script>

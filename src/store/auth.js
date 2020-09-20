@@ -31,21 +31,19 @@ export default {
             localStorage.setItem( "user", data.id )
             router.push({ name: "Home" })
           })
-          .catch((errr) => {
-            console.log({ errr: errr.message });
+          .catch((err) => {
+            Vue.swal("Oops", err.response.data.message, 'error')
           });
         // console.log({ registerAction: data });
       },
-      async signUp({ commit }, payload) {
+      async signUp(_, payload) {
         Api.post("/auth/signup", JSON.stringify( { data: payload }))
-          .then((res) => {
-            const { data: { data } } = res
-            console.log(commit)
-            console.log(data)
-            router.push({ name: "Login" })
+          .then(() => {
+            // const { data: { data } } = res
+            Vue.swal("Success", "Berhasil Signup", 'success').then(() => router.push({ name: "Login" }))
           })
           .catch((err) => {
-            console.log({ error: err.message })
+            Vue.swal("Oops", err.response.data.message, 'error')
           })
       },
       logOut({ commit }) {

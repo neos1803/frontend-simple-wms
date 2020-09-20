@@ -71,10 +71,10 @@ export default {
                     Vue.swal("OK", "Datanya berhasil ditambah :)", 'success').then(() => router.go({ name: "All Product", query: { page: 1 } }))
                 })
                 .catch((err) => {
-                  throw new Error(err)
+                  throw new Error(err.response.data.message)
                 });
         } catch (error) {
-            Vue.swal("Oops", "Kayaknya ada yang salah :(", 'error')
+            Vue.swal("Oops", `${error}`, 'error')
         }
       },
       async updateProducts(_, payload) {
