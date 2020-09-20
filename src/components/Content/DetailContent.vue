@@ -16,7 +16,7 @@
                     <input v-model="stock" class="shadow appearance-none border border-red-500 rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                     <div class="grid grid-cols-2 gap-3">
                         <button type="submit" class="border border-blue-300 w-auto">Update Data</button>
-                        <button v-on:click="remove" class="border border-blue-300 w-auto">Delete Data</button>
+                        <button v-on:click="remove" type="button" class="border border-blue-300 w-auto">Delete Data</button>
                     </div>
                 </div>
             </div>
@@ -89,9 +89,9 @@ export default {
             console.log(payload)
             this.updateProducts(payload)
         },
-        async remove() {
-            console.log("Deleting")
-            await this.deleteProducts(this.id)
+        remove() {
+            this.$swal("Sure?", "Delete this product?", 'question')
+                .then(() => this.deleteProducts(this.id))
             // this.$router.push({ name: "Product Table" })
         },
         ...mapActions("products", ["updateProducts", "deleteProducts", "getById"])

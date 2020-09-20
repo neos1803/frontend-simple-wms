@@ -1,5 +1,6 @@
 import Api from "./api"
 import router from '../router/index'
+import Vue from 'vue'
 
 export default {
     namespaced: true,
@@ -38,31 +39,43 @@ export default {
       },
       async getById({ commit }, payload) {
         console.log("Getting")
-        await Api.get("product/" + payload, {
-            headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-        .then((res) => {
-            const { data : { data } } = res
-            commit("setDetail", data)
-            // console.log(data.name)
-        })
+        try {
+            await Api.get("product/" + payload, {
+                headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            .then((res) => {
+                const { data : { data } } = res
+                commit("setDetail", data)
+                // console.log(data.name)
+            })
+            .catch((err) => {
+                throw new Error(err)
+            })
+        } catch(error) {
+            // console.log(error)
+            router.push({ name: "All Product", query: { page: 1 }})
+            Vue.swal("Oops", "Datanya gak ada", 'error')
+        }
     },
       async createProducts(_, payload) {
-        Api.post("/product/", payload, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-          .then((res) => {
-            console.log(res)
-            router.go({ path: "product" })
-          })
-          .catch((errr) => {
-            console.log({ error: errr.message });
-          });
+        try {
+            await Api.post("/product/", payload, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+              })
+                .then(() => {
+                    Vue.swal("OK", "Datanya berhasil ditambah :)", 'success').then(() => router.go({ name: "All Product", query: { page: 1 } }))
+                })
+                .catch((err) => {
+                  throw new Error(err)
+                });
+        } catch (error) {
+            Vue.swal("Oops", "Kayaknya ada yang salah :(", 'error')
+        }
       },
       async updateProducts(_, payload) {
         // console.log(commit)
@@ -72,9 +85,8 @@ export default {
             "Authorization": `Bearer ${localStorage.getItem("token")}`
           }
         })
-          .then((res) => {
-            console.log(res)
-            router.push({ name: "Product Table" })
+          .then(() => {
+            Vue.swal("OK", "Datanya berhasil diupdate :)", 'success').then(() => router.push({ name: "All Product", query: { page: 1 } }))
           })
           .catch((err) => {
             console.log(err)
@@ -88,9 +100,8 @@ export default {
             "Authorization": `Bearer ${localStorage.getItem("token")}`
           }
         })
-          .then((res) => {
-            console.log(res)
-            router.push({ name: "Product Table" }).catch(() => {})
+          .then(() => {
+            Vue.swal("OK", "Datanya berhasil dihapus :)", 'success').then(() => router.push({ name: "All Product", query: { page: 1 } }))
           })
           .catch((err) => {
             console.log(err)

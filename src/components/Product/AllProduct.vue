@@ -99,8 +99,8 @@ export default {
         router.go({ name: "Product Table", query: { page: e } })
       },
       del(e) {
-        console.log(e)
-        this.deleteProducts(e)
+        this.$swal("Sure?", "Delete this product?", 'question')
+          .then(() => this.deleteProducts(e))
       },
       print() {
         Api.get('print?type=all', {
