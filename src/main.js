@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueSweetalert2 from 'vue-sweetalert2'
+import './filters/filter'
 
 Vue.config.productionTip = false
 
