@@ -1,5 +1,6 @@
 import Api from "./api"
 import router from '../router/index'
+import Vue from 'vue'
 
 export default {
     namespaced: true,
@@ -11,11 +12,11 @@ export default {
         setToken(state, payload) {
             console.log(payload)
             state.token = payload
-          },
-          setUserData(state, payload) {
+        },
+        setUserData(state, payload) {
             console.log(payload)
             state.user_id = payload
-          },
+        },
     },
     actions: {
         // Autentikasi
@@ -47,5 +48,12 @@ export default {
             console.log({ error: err.message })
           })
       },
+      logOut({ commit }) {
+          localStorage.removeItem("token")
+          localStorage.removeItem("user")
+          commit("setToken", "")
+          commit("setUserData", "")
+          Vue.swal("Logout", "Anda telah logout", 'success').then(() => router.push({ name: "Login" }))
+      }
     }
 }

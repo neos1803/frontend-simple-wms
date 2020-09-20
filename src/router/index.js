@@ -87,10 +87,13 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // if don't have token
     if (localStorage.getItem("token") == null) {
-      next({
-        path: "/login",
-        params: { nextUrl: to.fullPath },
-      });
+      Vue.swal("Nope", "Login dulu :)", 'error')
+        .then(() => {
+          next({
+            path: "/login",
+            params: { nextUrl: to.fullPath },
+          });
+        })
     } else {
       // check by role
       // let user = JSON.parse(localStorage.getItem("user"));
