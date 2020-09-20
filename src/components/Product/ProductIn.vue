@@ -21,7 +21,7 @@
               <tr v-for="(p, index) in product_in.data" :key="index">
                 <td class="px-4 py-2">{{ index + 1 }}</td>
                 <td class="px-4 py-2">{{ p.Product.name }}</td>
-                <td class="px-4 py-2">{{ p.date }}</td>
+                <td class="px-4 py-2">{{ p.date | date-filter }}</td>
                 <td class="px-4 py-2">{{ p.total }}</td>
                 <td class="px-4 py-2">
                   <button v-on:click="del(p.id)" type="button" class="border border-blue-300 w-12">-</button>
@@ -69,8 +69,8 @@ export default {
     },
     methods: {
       del(e) {
-        // console.log(e)
-        this.deleteProductsIn(e)
+        this.$swal("Sure?", "Delete this product?", 'question')
+          .then(() => this.deleteProductsIn(e))
       },
       ...mapActions("products_in", ["getAllProductsIn", "deleteProductsIn"])
     },

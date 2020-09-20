@@ -15,7 +15,7 @@
                 <th class="px-4 py-2">Product Name</th>
                 <th class="px-4 py-2">Stock</th>
                 <th class="px-4 py-2">Price</th>
-                <th class="px-4 py-2">Update</th>
+                <th class="px-4 py-2">Supplier</th>
                 <th class="px-4 py-2">Delete</th>
                 <th class="px-4 py-2">Check-In Product</th>
                 <th class="px-4 py-2">Check-Out Product</th>
@@ -24,14 +24,14 @@
             <tbody class="bg-white">
               <tr v-for="(p, index) in product.data" :key="index">
                 <td class="px-4 py-2">{{index + 1}}</td>
-                <td class="px-4 py-2">{{ p.name }}</td>
-                <td class="px-4 py-2">{{ p.stock }}</td>
-                <td class="px-4 py-2">{{ p.price }}</td>
                 <td class="px-4 py-2">
-                  <router-link :to="{ name: `Detail Product`, params: { id: p.id } }">
-                    <button class="border border-blue-300 w-12">+</button>
+                  <router-link class="hover:text-blue-400" :to="{ name: `Detail Product`, params: { id: p.id } }">
+                    {{ p.name }}
                   </router-link>
                 </td>
+                <td class="px-4 py-2">{{ p.stock }}</td>
+                <td class="px-4 py-2">{{ p.price | price-filter }}</td>
+                <td class="px-4 py-2">{{ p.supplier.username }}</td>
                 <td class="px-4 py-2">
                   <button v-on:click="del(p.id)" type="button" class="border border-blue-300 w-12">-</button>
                 </td>

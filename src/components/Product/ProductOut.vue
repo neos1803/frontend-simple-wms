@@ -70,7 +70,8 @@ export default {
     },
     methods: {
       del(e) {
-        this.deleteProductsOut(e)
+        this.$swal("Sure?", "Delete this product?", 'question')
+          .then(() => this.deleteProductsOut(e))
       },
       ...mapActions("products_out", ["getAllProductsOut", "deleteProductsOut"])
     },

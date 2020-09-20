@@ -76,7 +76,7 @@ export default {
       }
       this.createProductsIn(payload)
     },
-    ...mapActions(["createProductsIn"])
+    ...mapActions("products_in", ["createProductsIn"])
   },
 };
 </script>

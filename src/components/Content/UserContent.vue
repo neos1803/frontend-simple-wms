@@ -17,7 +17,6 @@
                 <th class="px-4 py-2">Fullname</th>
                 <th class="px-4 py-2">Phone Number</th>
                 <th class="px-4 py-2">Email</th>
-                <th class="px-4 py-2">Update</th>
                 <th class="px-4 py-2">Delete</th>
                 <!-- <th class="px-4 py-2">Check-In Product</th> -->
                 <!-- <th class="px-4 py-2">Check-Out Product</th> -->
@@ -30,11 +29,6 @@
                 <td class="px-4 py-2">{{ p.full_name }}</td>
                 <td class="px-4 py-2">{{ p.phone_number }}</td>
                 <td class="px-4 py-2">{{ p.email }}</td>
-                <td class="px-4 py-2">
-                  <router-link :to="{ name: `Detail Product`, params: { id: p.id } }">
-                    <button class="border border-blue-300 w-12">+</button>
-                  </router-link>
-                </td>
                 <td class="px-4 py-2">
                   <button v-on:click="del(p.id)" type="button" class="border border-blue-300 w-12">-</button>
                 </td>
@@ -85,7 +79,11 @@ export default {
         ...mapState("users", ["user"])
     },
     methods: {
-        ...mapActions("users", ["getUsers"])
+        del(e) {
+            this.$swal("Sure?", "Delete this user?", 'question')
+                .then(() => this.deleteUsers(e))
+        },
+        ...mapActions("users", ["getUsers", "deleteUsers"])
     },
     watch: {
         '$route' (to, from) {
